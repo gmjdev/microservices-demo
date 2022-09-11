@@ -11,13 +11,17 @@ Like Spring Boot has their own parent POM, this project also utilizes same conce
 | service-registry-svc | Service for holding all registered Eureka client or discovery client information |
 | gateway-svc | Spring Cloud Gateway providing single point to communicate with all registered services |
 |greet-svc | Greeting service exposing two test APIs |
+
 <br/>
+
 ### Running Services
 #### configuration-svc
 #### service-registry-svc
 #### gateway-svc
 #### greet-svc
+
 <br/>
+
 ## References
 - [Maven Multi-Module Project] (https://books.sonatype.com/mvnex-book/reference/multimodule.html)
 - [Maven Multi-Module Enterprise Project] (https://books.sonatype.com/mvnex-book/reference/multimodule-web-spring.html)
