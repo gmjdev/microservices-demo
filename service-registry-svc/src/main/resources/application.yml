@@ -1,19 +1,21 @@
 server:
   port: 8761
+  ssl:
+    enabled: true
+    key-store: classpath:cert/keystore.p12
+    key-alias: ${KEYSTORE_ALIAS:localhost}
+    key-store-password: ${KEYSTORE_PHRASE:localhost}
+    key-store-type: ${KEYSTORE_TYPE:PKCS12}
+    key-password: ${KEYSTORE_KEY_PHRASE:localhost}
+    trust-store: classpath:cert/truststore.jks
+    trust-store-password: ${TRUSTSTORE_PHRASE:localhost}
 spring:
   application:
     name: service-registry-svc
   profiles:
     active: local
   config:
-    import: 'optional:configserver:' 
+    import: 'configserver:' 
   cloud:
     config:
       uri: ${CONFIG_URI:https://localhost:7575}
-      username: ${CONFIG_USR:user}
-      password: ${CONFIG_PHRASE:Config!12}
-      fail-fast: true
-      retry:
-        max-attempts: 5
-        max-interval: 15000
-        initial-interval: 10000

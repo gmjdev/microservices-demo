@@ -13,14 +13,6 @@ eureka:
   client:
     registerWithEureka: false
     fetchRegistry: true
-    tls:
-      enabled: true
-      trust-store: classpath:cert/truststore.jks
-      trust-store-password: changeit
-      key-store: classpath:cert/truststore.jks
-      key-store-password: changeit
-      keyPassword: changeit
-      keyStoreType: JKS
 management:
   endpoints:
     web:
