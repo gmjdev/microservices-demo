@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: greet-svc
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_URI:https://localhost:8443}/realms/${KEYCLOAK_REALM:AaapliSociety}

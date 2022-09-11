@@ -1,0 +1,14 @@
+server:
+  port: 8761
+spring:
+  application:
+    name: service-registry-svc
+eureka:
+  instance:
+    preferIpAddress: true
+    secure-port-enabled: true
+    secure-port: ${server.port}
+    non-secure-port-enabled: false
+  client:
+    registerWithEureka: false
+    fetchRegistry: false

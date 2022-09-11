@@ -1,0 +1,37 @@
+server:
+  ssl:
+    enabled: true
+    certificate: classpath:cert/localhost.com.crt
+    certificate-private-key: classpath:cert/localhost.com.key
+    trust-store: classpath:cert/truststore.jks
+    trust-store-password: changeit
+eureka:
+  instance:
+    hostname: ${EUREKA_HOSTNAME:localhost}
+    preferIpAddress: ${EUREKA_USE_IP:false}
+    secure-port-enabled: true
+    secure-port: ${server.port:8080}
+    non-secure-port-enabled: false
+  client:
+    healthcheck: 
+      enabled: true
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: ${SERVICE_REGISTRY_URI:https://localhost:8761}/eureka/
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+        - health
+        - info
+        - prometheus
+logging:
+  level:
+    root: WARN
+    com.gm: DEBUG        

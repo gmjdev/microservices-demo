@@ -1,0 +1,22 @@
+server:
+  port: 7575
+  ssl:
+    enabled: true
+    certificate: classpath:cert/localhost.com.crt
+    certificate-private-key: classpath:cert/localhost.com.key
+    trust-store: classpath:cert/truststore.jks
+    trust-store-password: changeit
+spring:
+  application:
+    name: configserver-svc
+  profiles:
+    active: composite
+  cloud:
+    config:
+      server:
+        composite:
+          - type: native
+            search-locations: 
+            - file://${HOME}/application/config
+            - classpath:config-{profile}
+            - classpath:config-{label}

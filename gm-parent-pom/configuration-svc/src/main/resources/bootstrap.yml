@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: configserver-svc
+encrypt:
+  keyStore:
+    location: classpath:cert/truststore.jks
+    password: changeit
+    alias: configserverkey
+    secret: changeit

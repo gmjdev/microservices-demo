@@ -1,0 +1,33 @@
+spring:
+  cloud:
+    gateway:
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
+      discovery:
+        locator:
+          lower-case-service-id: true
+          enabled: true
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    tls:
+      enabled: true
+      trust-store: classpath:cert/truststore.jks
+      trust-store-password: changeit
+      key-store: classpath:cert/truststore.jks
+      key-store-password: changeit
+      keyPassword: changeit
+      keyStoreType: JKS
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway, health, info, prometheus
+logging:
+  level:
+    org.springframework.security: DEBUG
+    reactor.netty: WARN
+    org.springframework.cloud.gateway: TRACE
