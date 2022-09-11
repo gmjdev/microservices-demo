@@ -23,5 +23,5 @@ Like Spring Boot has their own parent POM, this project also utilizes same conce
 <br/>
 
 ## References
-- [Maven Multi-Module Project] (https://books.sonatype.com/mvnex-book/reference/multimodule.html)
-- [Maven Multi-Module Enterprise Project] (https://books.sonatype.com/mvnex-book/reference/multimodule-web-spring.html)
+- [Maven Multi-Module Project](https://books.sonatype.com/mvnex-book/reference/multimodule.html)
+- [Maven Multi-Module Enterprise Project](https://books.sonatype.com/mvnex-book/reference/multimodule-web-spring.html)
