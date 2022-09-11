@@ -8,3 +8,5 @@ spring:
   cloud:
     config:
       uri: ${CONFIG_URI:https://localhost:7575}
+      username: ${CONFIG_USER:user}
+      password: ${CONFIG_USER_PHRASE:Config!12}

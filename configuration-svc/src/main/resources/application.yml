@@ -14,6 +14,9 @@ spring:
     name: configserver-svc
   profiles:
     active: composite
+  security:
+    user:
+      password: Config!12
   cloud:
     config:
       server:
@@ -22,7 +25,7 @@ spring:
             search-locations: 
             - file://${HOME}/application/config
             - classpath:config-{profile}
-            - classpath:config-{label}
+            - classpath:config-{label}         
 logging:
   level:
     root: WARN

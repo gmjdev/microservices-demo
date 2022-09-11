@@ -1,0 +1,6 @@
+encrypt:
+  keyStore:
+    location: classpath:cert/keystore.p12
+    password: ${KEYSTORE_PHRASE:localhost}
+    alias: configserverkey
+    secret: ${CONFIG_ENCRYPTION_PHRASE:localhost}
