@@ -1,10 +1,37 @@
 spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_URI:https://localhost:8443}/realms/${KEYCLOAK_REALM}
+            user-name-attribute: preferred_username
+        registration:
+          api-gateway-svc:
+            provider: keycloak
+            client-id: gateway-svc
+            client-secret: ${KC_GATEWAY_CLIENT_SECRET}
+            scope:
+            - email
+            - profile    
+      resourceserver:
+        opaquetoken:
+          introspection-uri: ${KEYCLOAK_URI:https://localhost:8443}/realms/${KEYCLOAK_REALM}/protocol/openid-connect/token/introspect 
+          client-id: gateway-svc
+          client-secret: ${KC_GATEWAY_CLIENT_SECRET}
+        jwt:
+          issuer-uri: ${KEYCLOAK_URI:https://localhost:8443}/realms/${KEYCLOAK_REALM}
   cloud:
+    loadbalancer:
+      cache:
+        enabled: false
     gateway:
       httpclient:
         wiretap: true
       httpserver:
         wiretap: true
+      default-filters:
+      - TokenRelay  
       discovery:
         locator:
           lower-case-service-id: true
