@@ -35,6 +35,7 @@ management:
         - info
         - prometheus
 logging:
+  config: 'classpath:logback-spring.xml'
   level:
     root: WARN
     com.gm: DEBUG

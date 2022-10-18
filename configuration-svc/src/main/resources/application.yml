@@ -10,8 +10,6 @@ server:
     trust-store: ${TRUST_STORE_PATH:classpath:cert/truststore.jks}
     trust-store-password: ${TRUSTSTORE_PHRASE:localhost}
 spring:
-  application:
-    name: configserver-svc
   profiles:
     active: composite
   security:
@@ -38,8 +36,9 @@ management:
         include:
         - health
         - info
-        - prometheus                     
+        - prometheus
 logging:
+  config: 'classpath:logback-spring.xml'
   level:
     root: WARN
     com.gm: DEBUG

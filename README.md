@@ -46,6 +46,10 @@ Like Spring Boot has their own parent POM, this project also utilizes same conce
 |EUREKA_HOSTNAME|localhost|Hostname of Eureka server, if running application locally on HTTPS use as localhost|Required|
 |EUREKA_USE_IP|false|Set to true while running application in Kubernetes or Docker env and also register services with IP address instead of hostname|Requird to use IP|
 |SERVICE_REGISTRY_URI|https://localhost:8761|URI of `service-registry-svc` application|Required|
+|LOG_PATH|-|Absolute base location where logs should be stored|Required, if `logging.file.path` configured this can be ignored|
+|logging.file.path|-|Absolute base location where logs should be stored|Required, if `LOG_PATH` is configured this can be ignored|
+|KEYCLOAK_URI|https://localhost:8443|URI of Keycloak server|Required to all services which needs authentication and authorization using OAuth2|
+|KEYCLOAK_REALM|-|Keycloack REALM to be used for token validation|Required to all services which needs authentication and authorization using OAuth2|
 
 ## Running Services
 ### Core Services
@@ -65,7 +69,14 @@ Kindly, update trust-store file path as absolute path where the repository is cl
 
 After specifying above argument you can run application as standalone java application or Spring Boot application.
 ### **API Gateway Application / gateway-svc**
-Please update trust-store for application as suggested in above `service-registry-svc` application and you should be able to run application either standalone java application or Spring Boot application.
+In addition to configuring trust-stroe and trust-store password similar to `service-registry-svc` application, we also need to configure additional property for integration with Keycloak as specified in below tables. Once below properties are configured correctly, you should be able to run application either standalone java application or Spring Boot application.
+| Variable Name | Default Value | Description |Required/Optional|
+| ----------- | ----------- | ----------- | ----------- |
+|KEYCLOAK_URI|https://localhost:8443|URI of Keycloak server|Required|
+|KEYCLOAK_REALM|-|Keycloack REALM to be used for token validation|Required|
+|KC_GATEWAY_CLIENT_SECRET|-|Keycloak Gateway client secret|Required|
+|app.security.endpoints.allowed|null|Whitelist APIs which does not needs authentication|All APIs will be protected if not configured|
+
 ### Auxiliary Services
 ---
 #### **greet-svc**

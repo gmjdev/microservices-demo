@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
 	@GetMapping("/test")
 	public String greet(JwtAuthenticationToken token) {
-		return "Hello I am greet-service";
+		return "Hello " + token.getTokenAttributes().get("preferred_username") + ", I am greet-service";
 	}
 
 	@GetMapping("/test/delayed")

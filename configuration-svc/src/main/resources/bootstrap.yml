@@ -1,3 +1,6 @@
+spring:
+  application:
+    name: configuration-svc
 encrypt:
   keyStore:
     location: ${KEYSTORE_PATH:classpath:cert/keystore.p12}
