@@ -110,6 +110,7 @@
 		</pluginManagement>
 	</build>
 	<modules>
+		<module>gm-common-spring</module>
 		<module>configuration-svc</module>
 		<module>service-registry-svc</module>
 		<module>gateway-svc</module>
