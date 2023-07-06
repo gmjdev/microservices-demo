@@ -1,12 +1,11 @@
 spring:
   application:
     name: gateway-svc
-  profiles:
-    active: local
   config:
     import: 'configserver:' 
   cloud:
     config:
+      profile: local
       uri: ${CONFIG_URI:https://localhost:7575}
-      username: ${CONFIG_USER:user}
+      username: ${CONFIG_USER:config-svc}
       password: ${CONFIG_USER_PHRASE:Config!12}

@@ -9,6 +9,12 @@ server:
     key-password: ${KEYSTORE_KEY_PHRASE:localhost}
     trust-store: classpath:cert/truststore.jks
     trust-store-password: ${TRUSTSTORE_PHRASE:localhost}
+encrypt:
+  keyStore:
+    location: classpath:cert/keystore.p12
+    password: ${KEYSTORE_PHRASE:localhost}
+    alias: configserverkey
+    secret: ${CONFIG_ENCRYPTION_PHRASE:localhost}    
 spring:
   application:
     name: configserver-svc
@@ -16,6 +22,7 @@ spring:
     active: composite
   security:
     user:
+      name: config-svc
       password: Config!12
   cloud:
     config:

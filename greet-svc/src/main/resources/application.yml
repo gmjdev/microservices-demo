@@ -1,12 +1,13 @@
 spring:
   application:
     name: greet-svc
-  profiles:
-    active: local
   config:
     import: 'configserver:' 
   cloud:
     config:
+      profile: local
       uri: ${CONFIG_URI:https://localhost:7575}
-      username: ${CONFIG_USER:user}
-      password: ${CONFIG_USER_PHRASE:Config!12}      
+      username: ${CONFIG_USER:config-svc}
+      password: ${CONFIG_USER_PHRASE:Config!12}
+server:
+  port: 8081
