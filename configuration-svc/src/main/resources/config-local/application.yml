@@ -39,6 +39,9 @@ management:
         - health
         - info
         - prometheus
+spring:
+  main:
+    banner-mode: off
 logging:
   level:
     root: WARN
