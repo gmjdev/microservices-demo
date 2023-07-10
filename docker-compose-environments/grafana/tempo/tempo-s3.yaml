@@ -1,0 +1,44 @@
+server:
+  http_listen_port: 3200
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        http:
+        grpc:
+    opencensus:
+
+ingester:
+  max_block_duration: 5m
+
+compactor:
+  compaction:
+    block_retention: 1h
+
+metrics_generator:
+  registry:
+    external_labels:
+      source: tempo
+      cluster: docker-compose
+
+storage:
+  trace:
+    # backend configuration to use
+    backend: s3                        
+    wal:
+      # where to store the the wal locally
+      path: /tmp/tempo/wal             
+    s3:
+      # how to store data in s3
+      bucket: tempo                    
+      endpoint: minio:9000
+      access_key: minio
+      secret_key: Welcome@MinIo
+      insecure: true
+      # For using AWS, select the appropriate regional endpoint and region
+      # endpoint: s3.dualstack.us-west-2.amazonaws.com
+      # region: us-west-2
+
+overrides:
+  metrics_generator_processors: [service-graphs, span-metrics]

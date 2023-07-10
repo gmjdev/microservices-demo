@@ -43,6 +43,9 @@ spring:
   main:
     banner-mode: off
 logging:
+  pattern:
+    # Include trace Id and Span Id into logs
+    level: '%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]'
   level:
     root: WARN
     com.gm: DEBUG

@@ -55,12 +55,27 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <!-- Dependency needed to run on MacOS for DNS -->
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-resolver-dns-native-macos</artifactId>
       <scope>runtime</scope>
       <classifier>osx-aarch_64</classifier>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-otlp</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-tracing</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-tracing-bridge-otel</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-exporter-otlp</artifactId>
     </dependency>
   </dependencies>
 </project>

@@ -1,0 +1,33 @@
+receivers:
+  otlp:
+    protocols:
+      grpc: 
+      http:
+    
+exporters:
+  logging:
+    loglevel: debug
+  otlp:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+
+processors:
+  batch:
+
+service:
+  extensions: []
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp]
+    metrics:
+      receivers: [otlp]
+      exporters: [logging]
+    logs:
+      receivers: [otlp]
+      exporters: [logging]
+  # telemetry:
+    # metrics:
+      # address: localhost:8888

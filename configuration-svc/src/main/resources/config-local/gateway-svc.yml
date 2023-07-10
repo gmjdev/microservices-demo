@@ -14,6 +14,16 @@ eureka:
     registerWithEureka: false
     fetchRegistry: true
 management:
+  otlp:
+    tracing:
+      sampling:
+        # Sample all of the requests instead of default 10%
+        probability: 1.0f 
+    metrics:
+      export:
+        enabled: false
+        step: 1m
+        url: http://localhost:4318/v1/metrics         
   endpoint:
     gateway:
       enabled: true
@@ -22,7 +32,7 @@ management:
       base-path: /actuator
       exposure:
         include: '*'
-logging:
+logging:  
   level:
     org.springframework.security: WARN
     reactor.netty: WARN
