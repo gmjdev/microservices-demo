@@ -14,12 +14,29 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring-boot.version>3.1.1</spring-boot.version>
-    <spring-cloud.version>2022.0.3</spring-cloud.version>
-    <spring-cloud-config.version>4.0.2</spring-cloud-config.version>
-    <spring-cloud-eureka-client.version>4.0.2</spring-cloud-eureka-client.version>
-    <spring-undertow.version>3.1.1</spring-undertow.version>
-    <keycloak.version>19.0.1</keycloak.version>
+    <spring-boot.version>3.1.2</spring-boot.version>
+    <spring-cloud.version>2022.0.4</spring-cloud.version>
+    <spring-cloud-eureka-client.version>4.0.3</spring-cloud-eureka-client.version>
+    <jib.version>3.3.2</jib.version>
+    <git-commit-id.version>4.9.10</git-commit-id.version>
+    <container-images-repo>registry.localhost:5000</container-images-repo>
+    <java-opts-xmx>256m</java-opts-xmx>
+    <java-opts-xms>256m</java-opts-xms>
+    <java-opts-xss>256m</java-opts-xss>
+    <download-maven-plugin.version>1.7.1</download-maven-plugin.version>
+    <container-java-image>
+      eclipse-temurin@sha256:956b8bccdb62e0681010a4127e8dba8b9d3f3247dd4004e11e4bdcec71bb7cb8</container-java-image>
+    <!-- OpenTelemetry Instrumentation Agent download url -->
+    <otel-agent-url>
+      https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar</otel-agent-url>
+    <!-- java instrumentation agents will be extracted relative to this build
+    location -->
+    <agents-extraction-root>${project.build.directory}/jib-agents</agents-extraction-root>
+    <!-- location to place the otel agent -->
+    <otel-agent-location>/opt/otel</otel-agent-location>
+    <otel-agent-enabled>false</otel-agent-enabled>
+    <otel-java-agent>
+      -javaagent:${otel-agent-location}/opentelemetry-javaagent.jar</otel-java-agent>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -67,15 +84,15 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      <dependency>
-        <groupId>org.keycloak.bom</groupId>
-        <artifactId>keycloak-adapter-bom</artifactId>
-        <version>${keycloak.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
   <build>
     <pluginManagement>
       <plugins>
@@ -86,6 +103,10 @@
           <configuration>
             <excludes>
               <exclude>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-autoconfigure-processor</artifactId>
+              </exclude>
+              <exclude>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
               </exclude>
@@ -94,6 +115,7 @@
           <executions>
             <execution>
               <goals>
+                <goal>repackage</goal>
                 <goal>build-info</goal>
               </goals>
               <configuration>
@@ -104,10 +126,108 @@
             </execution>
           </executions>
         </plugin>
+        <plugin>
+          <groupId>pl.project13.maven</groupId>
+          <artifactId>git-commit-id-plugin</artifactId>
+          <version>${git-commit-id.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>revision</goal>
+              </goals>
+              <phase>initialize</phase>
+              <configuration>
+                <generateGitPropertiesFile>true</generateGitPropertiesFile>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.google.cloud.tools</groupId>
+          <artifactId>jib-maven-plugin</artifactId>
+          <version>${jib.version}</version>
+          <configuration>
+            <allowInsecureRegistries>true</allowInsecureRegistries>
+            <from>
+              <image>${container-java-image}</image>
+            </from>
+            <to>
+              <image>
+                ${container-images-repo}/${project.artifactId}:${project.version}</image>
+              <tags>
+                <tag>latest</tag>
+                <tag>${project.version}</tag>
+              </tags>
+            </to>
+            <container>
+              <creationTime>${maven.build.timestamp}</creationTime>
+              <!--<entrypoint>
+                <arg>/bin/sh</arg>
+                <arg>../scripts/jar-run.sh</arg>
+              </entrypoint>-->
+              <format>OCI</format>
+              <jvmFlags>
+                <jvmFlag>-Xms${java-opts-xms}</jvmFlag>
+                <jvmFlag>-Xmx${java-opts-xmx}</jvmFlag>
+                <jvmFlag>-Xdebug</jvmFlag>
+                <jvmFlag>-Xss${java-opts-xss}</jvmFlag>
+                <jvmFlag>-server</jvmFlag>
+                <jvmFlag>-XX:+UseStringDeduplication</jvmFlag>
+                <jvmFlag>-XX:+OptimizeStringConcat</jvmFlag>
+                <jvmFlag>-XX:+UseG1GC</jvmFlag>
+                <jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
+                <jvmFlag>${otel-java-agent}</jvmFlag>
+                <!-- Flag to decide whether otel instructmentation should be
+                enabled or not -->
+                <jvmFlag>-Dotel.javaagent.enabled=${otel-agent-enabled}</jvmFlag>
+              </jvmFlags>
+              <mainClass>${app-main-class}</mainClass>
+            </container>
+            <extraDirectories>
+              <paths>${agents-extraction-root}</paths>
+              <permissions>
+                <permission>
+                  <file>../scripts/jar-run.sh</file>
+                  <mode>755</mode>
+                </permission>
+              </permissions>
+            </extraDirectories>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>build</goal>
+                <goal>dockerBuild</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.googlecode.maven-download-plugin</groupId>
+          <artifactId>download-maven-plugin</artifactId>
+          <version>${download-maven-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>install-otel-agent</id>
+              <phase>prepare-package</phase>
+              <goals>
+                <goal>wget</goal>
+              </goals>
+              <configuration>
+                <url>${otel-agent-url}</url>
+                <unpack>false</unpack>
+                <outputDirectory>
+                  ${agents-extraction-root}/${otel-agent-location}</outputDirectory>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
   <modules>
+    <module>gm-commons-spring-boot-starter</module>
     <module>configuration-svc</module>
     <module>service-registry-svc</module>
     <module>gateway-svc</module>

@@ -6,15 +6,13 @@ spring:
   cloud:
     config:
       profile: local 
-      uri: ${CONFIG_URI:https://localhost:7575}
+      uri: ${CONFIG_URI:http://localhost:7575}
       username: ${CONFIG_USER:config-svc}
       password: ${CONFIG_USER_PHRASE:Config!12}
       tls:
-        trust-store-type: PKCS12
         enabled: true
         key-store: classpath:cert/keystore.p12
         key-store-password: ${KEYSTORE_PHRASE:localhost}
-        key-store-type: ${KEYSTORE_TYPE:PKCS12}
         key-password: ${KEYSTORE_KEY_PHRASE:localhost}
         trust-store: classpath:cert/truststore.jks
         trust-store-password: ${TRUSTSTORE_PHRASE:localhost}

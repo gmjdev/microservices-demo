@@ -1,0 +1,20 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: springboot-microservices-cluster
+servers: 1
+agents: 2
+kubeAPI:
+  host: "my-cluster.localhost"
+  hostIP: "127.0.0.1"
+  hostPort: "6445"
+registries:
+  create:
+    name: registry.localhost
+    host: "0.0.0.0"
+    hostPort: "5000"
+  config: |
+    mirrors:
+      "registry":
+        endpoint:
+          - http://registry:5000

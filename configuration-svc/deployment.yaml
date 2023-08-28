@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: configuration-svc
+  labels:
+    app: configuration-svc
+spec:
+  selector:
+    app: configuration-svc
+  ports:
+    - port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configuration-svc
+  labels:
+    app: configuration-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configuration-svc
+  template:
+    metadata:
+      labels:
+        app: configuration-svc
+    spec:
+      containers:
+      - name: configuration-svc
+        image: registry.localhost:5000/configuration-svc:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 3
+        startupProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 5
+          failureThreshold: 30
+          periodSeconds: 10

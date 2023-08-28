@@ -1,0 +1,2 @@
+com.gm.services.opentelemetry.autoconfigure.OpenTelemetryMetricsAutoConfiguration
+com.gm.services.undertow.autoconfigure.UndertowServerCustomizerAutoConfiguration
