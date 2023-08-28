@@ -11,8 +11,8 @@ spring:
       password: ${CONFIG_USER_PHRASE:Config!12}
       tls:
         enabled: true
-        key-store: classpath:cert/keystore.p12
+        key-store: ${KEYSTORE_PATH:classpath:cert/keystore.p12}
         key-store-password: ${KEYSTORE_PHRASE:localhost}
         key-password: ${KEYSTORE_KEY_PHRASE:localhost}
-        trust-store: classpath:cert/truststore.jks
+        trust-store: ${TRUSTSTORE_PATH:classpath:cert/truststore.jks}
         trust-store-password: ${TRUSTSTORE_PHRASE:localhost}
