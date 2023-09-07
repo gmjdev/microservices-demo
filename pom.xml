@@ -19,7 +19,7 @@
     <spring-cloud-eureka-client.version>4.0.3</spring-cloud-eureka-client.version>
     <jib.version>3.3.2</jib.version>
     <git-commit-id.version>4.9.10</git-commit-id.version>
-    <container-images-repo>registry.localhost:5000</container-images-repo>
+    <container-images-repo>registry.localhost:5001</container-images-repo>
     <java-opts-xmx>256m</java-opts-xmx>
     <java-opts-xms>256m</java-opts-xms>
     <java-opts-xss>256m</java-opts-xss>
@@ -198,7 +198,6 @@
               <phase>package</phase>
               <goals>
                 <goal>build</goal>
-                <goal>dockerBuild</goal>
               </goals>
             </execution>
           </executions>

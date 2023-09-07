@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: configuration-svc
-        image: registry.localhost:5000/configuration-svc:latest
+        image: registry.localhost:5001/configuration-svc:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

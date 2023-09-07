@@ -5,9 +5,10 @@ metadata:
   labels:
     app: greet-svc
 spec:
-  clusterIP: None
   selector:
     app: greet-svc
+  ports:
+  - port: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -27,7 +28,7 @@ spec:
     spec:
       containers:
       - name: greet-svc
-        image: registry.localhost:5000/greet-svc:latest
+        image: registry.localhost:5001/greet-svc:latest
         imagePullPolicy: Always
         ports:
           - containerPort: 8080
@@ -50,3 +51,14 @@ spec:
           initialDelaySeconds: 5
           failureThreshold: 30
           periodSeconds: 10
+        env:
+        - name: CONFIG_URI
+          value: http://configuration-svc:8080
+        - name: SERVICE_REGISTRY_URI
+          value: http://service-registry-svc:8761
+        - name: NON_SECURE_PORT_ENABLED
+          value: "true"
+        - name: OTEL_METRICS_EXPORTER
+          value: otlp
+        - name: OTLP_URI
+          value: http://otel-collector:4317          
