@@ -11,6 +11,7 @@
   <properties>
     <app-main-class>com.gm.services.greet.GreetServiceApplication</app-main-class>
     <otel-agent-enabled>true</otel-agent-enabled>
+    <otel-metrics-exporter>otlp</otel-metrics-exporter>
   </properties>
   <dependencies>
     <dependency>

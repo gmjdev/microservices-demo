@@ -7,7 +7,6 @@ metadata:
 spec:
   ports:
   - port: 8080
-    protocol: TCP
   type: LoadBalancer
   selector:
     app: gateway-svc
@@ -60,7 +59,5 @@ spec:
           value: http://service-registry-svc:8761
         - name: NON_SECURE_PORT_ENABLED
           value: "true"    
-        - name: OTEL_METRICS_EXPORTER
-          value: otlp
-        - name: OTLP_URI
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
           value: http://otel-collector:4317

@@ -23,6 +23,7 @@
     <java-opts-xmx>256m</java-opts-xmx>
     <java-opts-xms>256m</java-opts-xms>
     <java-opts-xss>256m</java-opts-xss>
+    <app-main-class></app-main-class>
     <download-maven-plugin.version>1.7.1</download-maven-plugin.version>
     <container-java-image>
       eclipse-temurin@sha256:956b8bccdb62e0681010a4127e8dba8b9d3f3247dd4004e11e4bdcec71bb7cb8</container-java-image>
@@ -37,6 +38,13 @@
     <otel-agent-enabled>false</otel-agent-enabled>
     <otel-java-agent>
       -javaagent:${otel-agent-location}/opentelemetry-javaagent.jar</otel-java-agent>
+    <otel-svc-name>${project.artifactId}</otel-svc-name>
+    <!-- List of exporters to be used for metrics -->
+    <otel-metrics-exporter>none</otel-metrics-exporter>
+    <!-- List of exporters to be used for logs -->
+    <otel-logs-exporter>none</otel-logs-exporter>
+    <!-- List of exporters to be used for tracing -->
+    <otel-traces-exporter>none</otel-traces-exporter>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -180,6 +188,10 @@
                 <!-- Flag to decide whether otel instructmentation should be
                 enabled or not -->
                 <jvmFlag>-Dotel.javaagent.enabled=${otel-agent-enabled}</jvmFlag>
+                <jvmFlag>-Dotel.service.name=${otel-svc-name}</jvmFlag>
+                <jvmFlag>-Dotel.metrics.exporter=${otel-metrics-exporter}</jvmFlag>
+                <jvmFlag>-Dotel.logs.exporter=${otel-logs-exporter}</jvmFlag>
+                <jvmFlag>-Dotel.traces.exporter=${otel-traces-exporter}</jvmFlag>
               </jvmFlags>
               <mainClass>${app-main-class}</mainClass>
             </container>

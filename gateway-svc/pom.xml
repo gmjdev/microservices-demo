@@ -13,6 +13,7 @@
     <reactor-micrometer.version>1.0.9</reactor-micrometer.version>
     <app-main-class>com.gm.services.gateway.GatewayApplication</app-main-class>
     <otel-agent-enabled>true</otel-agent-enabled>
+    <otel-metrics-exporter>otlp</otel-metrics-exporter>
   </properties>
   <dependencies>
     <dependency>
