@@ -12,6 +12,7 @@ services:
       - minio-data:/data
     networks:
       - services-tier
+      - apps-network
   grafana:
     image: grafana/grafana-enterprise
     container_name: grafana
@@ -74,6 +75,7 @@ services:
       - 9009:9009
     networks:
       - services-tier
+      - apps-network
   otel-collector:
     image: otel/opentelemetry-collector:0.80.0
     container_name: otel-collector
@@ -89,8 +91,12 @@ services:
       - ./otel-config.yml:/etc/otel-collector-config.yml
     networks:
       - services-tier
+      - apps-network
 networks:
   services-tier: {}
+  apps-network:
+    name: apps-bridge-netwrk
+    external: true
 volumes:
   mimir-1-data:
   mimir-2-data:

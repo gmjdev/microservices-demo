@@ -1,13 +1,14 @@
 apiVersion: k3d.io/v1alpha5
 kind: Simple
 metadata:
-  name: springboot-microservices-cluster
+  name: app-cluster
 servers: 1
 agents: 2
 kubeAPI:
-  host: "my-cluster.localhost"
+  host: "app-cluster.localhost"
   hostIP: "127.0.0.1"
   hostPort: "6445"
+network: apps-bridge-netwrk
 registries:
   create:
     name: registry.localhost

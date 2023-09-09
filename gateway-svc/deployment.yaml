@@ -7,7 +7,8 @@ metadata:
 spec:
   ports:
   - port: 8080
-  type: LoadBalancer
+    nodePort: 30038
+  type: NodePort
   selector:
     app: gateway-svc
 ---
@@ -60,4 +61,6 @@ spec:
         - name: NON_SECURE_PORT_ENABLED
           value: "true"    
         - name: OTEL_EXPORTER_OTLP_ENDPOINT
-          value: http://otel-collector:4317
+          value: http://host.k3d.internal:4317
+        - name: SERVICE_INSTANCE_PREFER_IP
+          value: "true"

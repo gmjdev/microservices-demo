@@ -21,7 +21,7 @@ local machine. For installation refer [Docker Desktop Install](https://docs.dock
 4. Private Local Docker Registry
 
    We are going to setup local private repository for uploading our docker images, you may use docker hub/GCR/ECR 
-but for our demo purpose we will go with local repository. For running local private repository refer 
+but to keep things simple we will go with local repository. For running local private repository refer 
 [Running local docker registry](#running-local-docker-registry)
 
 5. Dive
@@ -45,3 +45,13 @@ at https://github.com/wagoodman/dive.
 4. Verify Container Images build by Jib
 
    `dive <docker-image-id>`
+
+### Create Custom Docker network for communication
+
+`docker network create -d bridge apps-bridge-netwrk`
+
+### Create K8s local cluster
+
+Execute below command from root folder of projects
+
+`k3d cluster create -c k8s/k3d-cluster.yml `
