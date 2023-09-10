@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +27,7 @@ public class SecurityConfig {
                                           @Value("${spring.security.user.password}") String configPhrase,
                                           @Value("${spring.security.actuator-user.name}") String actuatorUser,
                                           @Value("${spring.security.actuator-user.password}") String actuatorUserPhrase)
-			throws Exception {
+    {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(createUser(configUser, configPhrase, "CONFIG_READ"));
         manager.createUser(createUser(actuatorUser, actuatorUserPhrase, "ACTUATOR_READ"));
@@ -55,7 +56,7 @@ public class SecurityConfig {
           )
           .httpBasic(Customizer.withDefaults())
           .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-          .csrf(customizer -> customizer.disable());
+          .csrf(AbstractHttpConfigurer::disable);
       return httpSecurity.build();
       // @formatter:on
     }

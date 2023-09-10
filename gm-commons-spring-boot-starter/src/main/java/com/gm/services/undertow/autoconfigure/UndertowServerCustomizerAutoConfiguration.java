@@ -1,7 +1,6 @@
 package com.gm.services.undertow.autoconfigure;
 
 import io.undertow.server.HttpServerExchange;
-import io.undertow.server.handlers.MetricsHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

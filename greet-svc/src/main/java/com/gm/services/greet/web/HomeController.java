@@ -22,18 +22,19 @@ public class HomeController {
 	@GetMapping("/greet")
 	public String greet(@RequestParam(defaultValue = "World") String q,
 						@RequestParam(defaultValue = "false") boolean highCpu) {
-		final Map<String, String> maps = new HashMap<>();
 		if (highCpu) {
 			while(highCpu) {
 				try {
 					Runnable r = () -> {
 						while(true) {
+							// left blank intentionally
 						}
 					};
 					new Thread(r).start();
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
 					log.error("Interrupted exception");
+					Thread.currentThread().interrupt();
 				}
 			}
 		}
@@ -46,7 +47,7 @@ public class HomeController {
 		try {
 			Thread.sleep(TimeUnit.MINUTES.toMillis(3));
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Thread.currentThread().interrupt();
 		}
 		return "Hello I am greet-service with delay";
 	}
