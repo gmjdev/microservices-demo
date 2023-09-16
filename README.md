@@ -1,56 +1,79 @@
 # Spring Boot + Spring Cloud Microservices
-## Project Setup
+### Overview
 
-This source code is based on Maven multi module project and it contains primary services such as Configuration, Service Registry and Gateway Service which forms the core of Microservices in addition to it there are few additional auxiliary services which can be used to get complete microservices communication.
+This source code is based on Maven multi-module project, the parent project `gm-parent-pom` contains common 
+maven configuration which can be shared with child module projects. This source code contains one library project named 
+as `gm-commons-spring-boot-starter` which will contain modules or Spring components that can be reused by child modules. 
+In addition to library project, we are having four Spring Boot application namely `configuration-svc`, 
+`service-registry-svc`, `gateway-svc`, `greet-svc` each with their specific purpose and functionality which we will
+discuss in below sections. We will be using `docker` to run our external tools like Database, Nginx Server and any component
+which the application needs for its functionality wherever possible, scripts required for running docker containers or
+docker compose stack can be found under `docker-compose-environments` folder. If you would like to verify REST API's you 
+can use Postman collection available under `postman` folder. We will be using `Java 17`, `Spring Boot 3.X.X`,
+`Spring Cloud 2022.0.4` in our sample application.
 
+### Architecture
 
-Like Spring Boot has their own parent POM, this project also utilizes same concept and has `gm-parent-pom` as parent of all projects
+Below image shows high-level interaction of various application in microservices architecture. As shown below, we
+can see there are certain services like Config Server, Service Registry, API Gateway are connected with every 
+microservice, we term these microservices as Core Services, as these services provides base for implementing scalable 
+and distributed microservices systems. The application only exposes API Gateway service to be accessible publicly, all
+other services will run behind it. We will be exposing services which offers Domain/Business functionality to public via
+API Gateway. All our services except API Gateway will be running in private mode, in addition to it we are also not going
+to expose Config Server and Service Registry to public as those needs to be used internally. All our applications can access 
+external infrastructure or docker based container services like Database, NoSQL Database by updating our configuration.
 
+_PS: As we are running all our services on single machine we can access individual application exposed API using host 
+and port number information. Exposing services publicly and private is achievable when deploying application on Cloud
+environment using VM instances._
 
+<img src="readme-resources/arch_diagram.png" width="65%">
 
-| Name | Description |
-| ----------- | ----------- |
-| configuration-svc | Service for hosting configuration data of services which are spring-boot-config-client |
-| service-registry-svc | Service for holding all registered Eureka client or discovery client information |
-| gateway-svc | Spring Cloud Gateway providing single point to communicate with all registered services |
-|greet-svc | Greeting service exposing two test APIs |
+### Services
 
+##### Configuration Server
+`configuration-svc` module provides implementation of Configuration server using Spring Cloud Config server. By default
+config server is backed by git repository but for our implementation we will using classpath and file based location to
+keep things simpler. Under main `resources` folder of `configuration-svc` you can find folder of pattern `config-{profile}` 
+which contains configuration for particular profile which is currently `local`. Under this folder you can see multiple yml
+configuration files, `application.yml` file within this folder provides common configuration which can be shared across
+all available services configuration, service specific additional configuration for particular services is provided 
+by creating yml file with the application name which is derived from property `spring.application.name`. All services 
+except `configuration-svc` service at the startup connects with configuration server to fetch their configuration, 
+which profile configuration to be fetched can be specified by setting `spring.profiles.active` environment or program argument.
 
+For more information your can refer [Spring-Cloud-Config](https://docs.spring.io/spring-cloud-config/docs/current/reference/html/)
 
-*Above all services run on HTTPS using self-signed certificate available under* `resources/cert` *folder, kindly make sure you configure trust-store* *as JVM argument or* *as part of OS to avoid getting* `sun.security.provider.certpath.SunCertPathBuilderException` *or* `sun.security.validator.ValidatorException` *certificate errors as specified in Running Services section.*
+##### Service Registry 
 
+Service Registry as the name implies is the registry of services which are registered with our Eureka Service registry.
+In simple terms, we can say service registry act as a phone book of registered services containing information like 
+service name, hostname, port and IP address and so on. Our service registry application resides under `service-registry-svc` 
+which uses Spring Netflix Eureka Server for implementation. Our service registry application also fetches its configuration on
+startup from Configuration server.
 
+For more information your can refer [Spring-Cloud-Eureka-Server](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-eureka-server.html)
 
-## Running Services
-### Core Services
----
-### **Application Configuration Service / configuration-svc**
-No special configuration is needed to run the application. You can run application as standalone java application or if you are using Spring Tools Suite you can run application as Spring Boot application.
-### **Eureka Service Registry and Discovery Service / service-registry-svc**
+##### API Gateway
 
-For running service-registry-svc we need to specify trust-store and trust-store password as a VM arguments containing self-signed CA certificate or else we need to update OS to install our self-signed CA certificate so that it can communicate with the `configuration-svc` service to fetch configuration properties.
+API Gateway is implemented using Spring Cloud Gateway instead of Spring Netflix Zuul Gateway. Spring Cloud Gateway is more
+feature rich as compared with Zuul API Gateway. API Gateway is publicly exposed and is central point to access all our
+microservices APIs. API Gateway on startup also fetches its configuration from Configuration server and uses Service
+registry to locate the downstream services for forwarding the requests using their name. API Gateway can automatically 
+maps downstream services using their service names as means of communicating with downstream service.
 
+For more information your can refer [Spring-Cloud-Gateway](https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#gateway-starter)
 
-Kindly, update trust-store file path as absolute path where the repository is cloned and use trust-store available in any of the project.
+##### Greet Service
 
+A Simple service exposing greet API to greet the provided username.
 
-`-Djavax.net.ssl.trustStore=./truststore.jks -Djavax.net.ssl.trustStorePassword=localhost`
+### Running Services
 
+All application can be run as standalone java application, Configuration service must be run first as it provides configuration
+for all other microservices, after running configuration service we need to run Service Registry application once these two
+services started successfully other microservices can be run in any order.
 
-After specifying above argument you can run application as standalone java application or Spring Boot application.
-### **API Gateway Application / gateway-svc**
-Please update trust-store for application as suggested in above `service-registry-svc` application and you should be able to run application either standalone java application or Spring Boot application.
-### Auxiliary Services
----
-#### **greet-svc**
-Kindly, update trust-store file path as absolute path where the repository is cloned and use trust-store available in any of the project.
-
-
-`-Djavax.net.ssl.trustStore=./truststore.jks -Djavax.net.ssl.trustStorePassword=localhost`
-
-
-After specifying above argument you can run application as standalone java application or Spring Boot application.
-
-## References
+#### References
 - [Maven Multi-Module Project](https://books.sonatype.com/mvnex-book/reference/multimodule.html)
 - [Maven Multi-Module Enterprise Project](https://books.sonatype.com/mvnex-book/reference/multimodule-web-spring.html)

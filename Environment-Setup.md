@@ -1,32 +1,27 @@
 # Environment Setup
-This documentation will help you to set up your local environment for running the application. As part of this document 
-we will configure setting up below application/tools.
+This documentation will guide you to set up your local environment for running the application using Docker and Kubernetes. 
 
 ### Prerequisite Software/Tools
 
-1. Docker Desktop / Rancher Desktop
-
-   We will run our external services as part of docker container, so it is mandatory to have docker on running on 
-local machine. For installation refer [Docker Desktop Install](https://docs.docker.com/desktop/)
+#### Docker Desktop / Rancher Desktop
+We will run our external services as part of docker container, so it is mandatory to have docker tool running on 
+local machine. For installation you can refer [Docker Desktop Install](https://docs.docker.com/desktop/)
 / [Rancher Desktop Install](https://docs.rancherdesktop.io/getting-started/installation)
 
-2. Skaffold
+#### K3d
+K3d will help us to setup our local Kubernetes Cluster, it is lightweight minimal kubernetes distribution to perform 
+local development on Kubernetes Cluster. Refer [K3d](https://k3d.io/v5.6.0/) website for more information.
 
-   Refer [Installation](https://skaffold.dev/docs/install/)
+#### Skaffold
+Refer [Installation](https://skaffold.dev/docs/install/)
 
-3. Minikube/K3d
-   
-   Helps in setting up local Kubernetes cluster.
-
-4. Private Local Docker Registry
-
-   We are going to setup local private repository for uploading our docker images, you may use docker hub/GCR/ECR 
+#### Private Local Docker Registry
+We are going to setup local private repository for uploading our docker images, you may use docker hub/GCR/ECR 
 but to keep things simple we will go with local repository. For running local private repository refer 
 [Running local docker registry](#running-local-docker-registry)
 
-5. Dive
-   
-   To verify contents of container image build by Jib plugin we can use dive tool you can read about it more 
+#### Dive
+To verify contents of container image build by Jib plugin we can use dive tool you can read about it more 
 at https://github.com/wagoodman/dive.
 
 ### Running local docker registry

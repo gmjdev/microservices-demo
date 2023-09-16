@@ -1,6 +1,2 @@
 server:
-  ssl:
-    enabled: false
-eureka:
-  instance:
-    non-secure-port-enabled: true
+  port: 8081
