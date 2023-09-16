@@ -27,7 +27,7 @@ _PS: As we are running all our services on single machine we can access individu
 and port number information. Exposing services publicly and private is achievable when deploying application on Cloud
 environment using VM instances._
 
-<img src="readme-resources/arch_diagram.png" width="65%">
+![Architecture](readme-resources/arch_diagram.png)
 
 ### Services
 
