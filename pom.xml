@@ -27,6 +27,7 @@
     <download-maven-plugin.version>1.7.1</download-maven-plugin.version>
     <container-java-image>
       eclipse-temurin@sha256:956b8bccdb62e0681010a4127e8dba8b9d3f3247dd4004e11e4bdcec71bb7cb8</container-java-image>
+    <jib-skip>true</jib-skip>
     <!-- OpenTelemetry Instrumentation Agent download url -->
     <otel-agent-url>
       https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar</otel-agent-url>
@@ -155,7 +156,7 @@
           <artifactId>jib-maven-plugin</artifactId>
           <version>${jib.version}</version>
           <configuration>
-            <skip>true</skip>
+            <skip>${jib-skip}</skip>
             <allowInsecureRegistries>true</allowInsecureRegistries>
             <from>
               <image>${container-java-image}</image>

@@ -1,0 +1,15 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: greet-svc
+build:
+  insecureRegistries:
+    - registry.localhost:5001
+  artifacts:
+    - image: greet-jib
+      jib: {}
+manifests:
+  rawYaml:
+    - k8s/*
+deploy:
+  kubectl: {}

@@ -1,0 +1,19 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: gateway-svc
+build:
+  insecureRegistries:
+    - registry.localhost:5001
+  artifacts:
+    - image: gateway-jib
+      jib: {}
+manifests:
+  rawYaml:
+    - k8s/*
+deploy:
+  kubectl: {}
+portForward:
+  - resourceType: service
+    resourceName: gateway-svc
+    port: 8080

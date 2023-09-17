@@ -12,6 +12,7 @@
   <description>Service Registry Service</description>
   <properties>
     <app-main-class>com.gm.services.serviceregistry.ServiceRegistryApplication</app-main-class>
+    <jib-skip>false</jib-skip>
   </properties>
   <dependencies>
     <dependency>

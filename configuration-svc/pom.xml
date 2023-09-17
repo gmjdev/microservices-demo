@@ -13,6 +13,7 @@
         <app-main-class>
             com.gm.services.configuration.ConfigurationServiceApplication
         </app-main-class>
+        <jib-skip>false</jib-skip>
     </properties>
     <dependencies>
         <dependency>

@@ -1,46 +1,7 @@
 apiVersion: skaffold/v4beta6
 kind: Config
-metadata:
-  name: configuration-svc
-build:
-  insecureRegistries:
-    - registry.localhost:5001
 requires:
-  - configs: ["configuration-svc"]
-manifests:
-  rawYaml:
-    - configuration-svc/deployment.yaml
----
-apiVersion: skaffold/v4beta6
-kind: Config
-metadata:
-  name: service-registry-svc
-build:
-  insecureRegistries:
-    - registry.localhost:5001
-manifests:
-  rawYaml:
-    - service-registry-svc/deployment.yaml
----
-apiVersion: skaffold/v4beta6
-kind: Config
-metadata:
-  name: microservices-demo
-build:
-  insecureRegistries:
-    - registry.localhost:5001
-  artifacts:
-    - image: skaffold-jib-1
-      jib:
-        project:
-
-requires:
-  - configs: ["configuration-svc", "service-registry-svc"]
-manifests:
-  rawYaml:
-    - gateway-svc/deployment.yaml
-    - greet-svc/deployment.yaml
-portForward:
-  - resourceType: service
-    resourceName: gateway-svc
-    port: 8080
+  - path: ./configuration-svc
+  - path: ./service-registry-svc
+  - path: ./gateway-svc
+  - path: ./greet-svc
